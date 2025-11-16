@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accesos Rápidos CEIF</title>
+    <title>Accesos Esenciales CEIF</title>
     <!-- Carga de Tailwind CSS para un diseño responsivo y sobrio -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Carga de Lucide Icons para iconos limpios y modernos -->
@@ -13,7 +13,7 @@
         html {
             font-family: 'Inter', sans-serif;
         }
-        /* Estilo para el hover de los botones */
+        /* Estilo para el hover de los botones, aplica un ligero escalado */
         .link-button:hover .lucide {
             transform: scale(1.1);
             transition: transform 0.2s ease-in-out;
@@ -22,17 +22,31 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-    <!-- Contenedor Principal Centrado -->
+    <!-- Contenedor Principal Centrado (Max width 500px) -->
     <div class="w-full max-w-lg bg-white p-6 md:p-10 shadow-2xl rounded-2xl border border-gray-200">
 
         <!-- Encabezado -->
-        <header class="text-center mb-10">
-            <h1 class="text-3xl font-bold text-gray-800 tracking-tight">CEIF - Accesos Esenciales</h1>
-            <p class="text-gray-500 mt-2">Plataforma de enlaces para la gestión diaria.</p>
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Accesos CEIF</h1>
+            <p class="text-gray-500 mt-2">Herramientas y documentos de trabajo diario.</p>
         </header>
 
-        <!-- Sección de Botones -->
+        <!-- Sección de Botones (Servicios Clínicos) -->
         <nav class="space-y-4">
+
+            <!-- Nuevo Botón: Rayen APS -->
+            <a href="https://clinico.rayenaps.cl/#/actualizar-app" target="_blank"
+                class="link-button flex items-center justify-center w-full px-6 py-4 bg-teal-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-teal-700 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-teal-500 focus:ring-opacity-50">
+                <!-- Icono de salud o registro (Heart Pulse) -->
+                <i data-lucide="heart-pulse" class="w-6 h-6 mr-3"></i>
+                Rayen APS (Clínico)
+            </a>
+            
+            <!-- Separador Visual -->
+            <div class="py-1">
+                <hr class="border-gray-300">
+                <p class="text-center text-sm text-gray-500 mt-2 font-medium">DOCUMENTOS Y ARCHIVOS (DRIVE)</p>
+            </div>
             
             <!-- Botón 1: Pacientes CEIF (Drive Folder) -->
             <a href="https://drive.google.com/drive/folders/1DDZ4hBKfaiLzfcceaqOrzVUwdDuERBrd" target="_blank"
@@ -58,11 +72,6 @@
                 Temas de Psiquiatría
             </a>
 
-            <!-- Separador Visual para servicios de Drive vs. Mail -->
-            <div class="py-2">
-                <hr class="border-gray-300">
-            </div>
-
             <!-- Botón 4: Drive en general (Home) -->
             <a href="https://drive.google.com/drive/u/0/home" target="_blank"
                 class="link-button flex items-center justify-center w-full px-6 py-4 bg-gray-700 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-gray-600 focus:ring-opacity-50">
@@ -71,7 +80,21 @@
                 Google Drive (General)
             </a>
 
-            <!-- Botón 5: Gmail -->
+            <!-- Separador Visual para servicios de Mail -->
+            <div class="py-1">
+                <hr class="border-gray-300">
+                <p class="text-center text-sm text-gray-500 mt-2 font-medium">CORREO ELECTRÓNICO</p>
+            </div>
+
+            <!-- Botón 5: Mail corporativo (Outlook) -->
+            <a href="https://outlook.office.com/mail/?realm=cmpuentealto.cl&login_hint=patricio.cerda@cmpuentealto.cl" target="_blank"
+                class="link-button flex items-center justify-center w-full px-6 py-4 bg-blue-700 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-blue-800 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-blue-600 focus:ring-opacity-50">
+                <!-- Icono de bandeja de entrada (Mail Corporativo) -->
+                <i data-lucide="inbox" class="w-6 h-6 mr-3"></i>
+                Mail Corporativo (Outlook)
+            </a>
+
+            <!-- Botón 6: Gmail -->
             <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox" target="_blank"
                 class="link-button flex items-center justify-center w-full px-6 py-4 bg-red-600 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-red-700 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
                 <!-- Icono de correo (Gmail) -->
@@ -79,14 +102,12 @@
                 Gmail Personal
             </a>
 
-            <!-- Botón 6: Mail corporativo (Outlook) -->
-            <a href="https://outlook.office.com/mail/?realm=cmpuentealto.cl&login_hint=patricio.cerda@cmpuentealto.cl" target="_blank"
-                class="link-button flex items-center justify-center w-full px-6 py-4 bg-blue-700 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-blue-800 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-blue-600 focus:ring-opacity-50">
-                <!-- Icono de bandeja de entrada (Mail Corporativo) -->
-                <i data-lucide="inbox" class="w-6 h-6 mr-3"></i>
-                Mail Corporativo (Outlook)
-            </a>
         </nav>
+
+        <!-- Pie de página (Opcional, discreto) -->
+        <footer class="text-center mt-8 text-sm text-gray-400">
+            <p>&copy; Accesos Rápidos para la gestión CEIF.</p>
+        </footer>
 
     </div>
 
