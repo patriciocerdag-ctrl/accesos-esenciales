@@ -3,117 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accesos Esenciales CEIF</title>
-    <!-- Carga de Tailwind CSS para un diseño responsivo y sobrio -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Carga de Lucide Icons para iconos limpios y modernos -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Calculadora PCL-5</title>
     <style>
-        /* Configuración de la fuente global Inter */
-        html {
-            font-family: 'Inter', sans-serif;
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --bg: #f4f7f6;
+            --card: #ffffff;
         }
-        /* Estilo para el hover de los botones, aplica un ligero escalado */
-        .link-button:hover .lucide {
-            transform: scale(1.1);
-            transition: transform 0.2s ease-in-out;
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
         }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 { border-bottom: 3px solid var(--accent); padding-bottom: 10px; color: var(--primary); margin-bottom: 5px; }
+        h2 { color: var(--accent); font-size: 1.2em; margin-top: 0; }
+        
+        .info-section {
+            background: #eef2f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: bold; }
+        .input-group input[type="text"], .input-group input[type="date"], .input-group textarea {
+            width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;
+        }
+
+        .question-block {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-text { font-weight: bold; display: block; margin-bottom: 8px; }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            background-color: #fff;
+        }
+
+        #result-container {
+            position: sticky;
+            bottom: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display { font-size: 1.8em; font-weight: bold; }
+        .interpretation { font-style: italic; font-size: 1.1em; color: #ecf0f1; }
+
+        .btn-print {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .checkbox-group { margin: 10px 0; }
+        .checkbox-group label { display: block; font-weight: normal; margin-bottom: 5px; }
+
+        @media print {
+            .btn-print, #result-container { display: none; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; max-width: 100%; }
+            #print-results { display: block !important; border-top: 2px solid #000; margin-top: 20px; padding-top: 10px; }
+        }
+
+        #print-results { display: none; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body>
 
-    <!-- Contenedor Principal Centrado (Max width 500px) -->
-    <div class="w-full max-w-lg bg-white p-6 md:p-10 shadow-2xl rounded-2xl border border-gray-200">
+<div class="container">
+    <h1>PCL-5 (PTSD Checklist for DSM-5)</h1>
+    <h2>Criterio A: Identificando la Peor Experiencia</h2>
 
-        <!-- Encabezado -->
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Accesos CEIF</h1>
-            <p class="text-gray-500 mt-2">Herramientas y documentos de trabajo diario.</p>
-        </header>
-
-        <!-- Sección de Botones (Servicios Clínicos) -->
-        <nav class="space-y-4">
-
-            <!-- Nuevo Botón: Rayen APS -->
-            <a href="https://clinico.rayenaps.cl/#/actualizar-app" target="_blank"
-                class="link-button flex items-center justify-center w-full px-6 py-4 bg-teal-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-teal-700 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-teal-500 focus:ring-opacity-50">
-                <!-- Icono de salud o registro (Heart Pulse) -->
-                <i data-lucide="heart-pulse" class="w-6 h-6 mr-3"></i>
-                Rayen APS (Clínico)
-            </a>
-            
-            <!-- Separador Visual -->
-            <div class="py-1">
-                <hr class="border-gray-300">
-                <p class="text-center text-sm text-gray-500 mt-2 font-medium">DOCUMENTOS Y ARCHIVOS (DRIVE)</p>
-            </div>
-            
-            <!-- Botón 1: Pacientes CEIF (Drive Folder) -->
-            <a href="https://drive.google.com/drive/folders/1DDZ4hBKfaiLzfcceaqOrzVUwdDuERBrd" target="_blank"
-                class="link-button flex items-center justify-center w-full px-6 py-4 bg-indigo-600 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
-                <!-- Icono de carpeta (Drive) -->
-                <i data-lucide="folder-open" class="w-6 h-6 mr-3"></i>
-                Pacientes CEIF
-            </a>
-
-            <!-- Botón 2: Formatos (Drive Folder) -->
-            <a href="https://drive.google.com/drive/folders/1e0U1jW3GnyiO58rAIzOonSgvzWvqzrOH" target="_blank"
-                class="link-button flex items-center justify-center w-full px-6 py-4 bg-indigo-500 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-indigo-600 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
-                <!-- Icono de documento -->
-                <i data-lucide="file-text" class="w-6 h-6 mr-3"></i>
-                Formatos
-            </a>
-
-            <!-- Botón 3: Temas de psiquiatría (Drive Folder) -->
-            <a href="https://drive.google.com/drive/u/0/folders/1853rukI4SMmydk-Cg77Kz77SlzJnGlUd" target="_blank"
-                class="link-button flex items-center justify-center w-full px-6 py-4 bg-indigo-400 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-indigo-500 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
-                <!-- Icono de libro/conocimiento -->
-                <i data-lucide="book-open" class="w-6 h-6 mr-3"></i>
-                Temas de Psiquiatría
-            </a>
-
-            <!-- Botón 4: Drive en general (Home) -->
-            <a href="https://drive.google.com/drive/u/0/home" target="_blank"
-                class="link-button flex items-center justify-center w-full px-6 py-4 bg-gray-700 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-gray-600 focus:ring-opacity-50">
-                <!-- Icono de Nube (Drive General) -->
-                <i data-lucide="cloud-cog" class="w-6 h-6 mr-3"></i>
-                Google Drive (General)
-            </a>
-
-            <!-- Separador Visual para servicios de Mail -->
-            <div class="py-1">
-                <hr class="border-gray-300">
-                <p class="text-center text-sm text-gray-500 mt-2 font-medium">CORREO ELECTRÓNICO</p>
-            </div>
-
-            <!-- Botón 5: Mail corporativo (Outlook) -->
-            <a href="https://outlook.office.com/mail/?realm=cmpuentealto.cl&login_hint=patricio.cerda@cmpuentealto.cl" target="_blank"
-                class="link-button flex items-center justify-center w-full px-6 py-4 bg-blue-700 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-blue-800 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-blue-600 focus:ring-opacity-50">
-                <!-- Icono de bandeja de entrada (Mail Corporativo) -->
-                <i data-lucide="inbox" class="w-6 h-6 mr-3"></i>
-                Mail Corporativo (Outlook)
-            </a>
-
-            <!-- Botón 6: Gmail -->
-            <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox" target="_blank"
-                class="link-button flex items-center justify-center w-full px-6 py-4 bg-red-600 text-white text-lg font-medium rounded-xl shadow-lg hover:bg-red-700 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
-                <!-- Icono de correo (Gmail) -->
-                <i data-lucide="mail" class="w-6 h-6 mr-3"></i>
-                Gmail Personal
-            </a>
-
-        </nav>
-
-        <!-- Pie de página (Opcional, discreto) -->
-        <footer class="text-center mt-8 text-sm text-gray-400">
-            <p>&copy; Accesos Rápidos para la gestión CEIF.</p>
-        </footer>
-
+    <div class="info-section">
+        Este cuestionario pregunta sobre problemas tras una experiencia muy estresante (muerte, amenaza de muerte, heridas serias o violencia sexual).
     </div>
 
-    <!-- Script para inicializar los iconos de Lucide -->
-    <script>
-        lucide.createIcons();
-    </script>
+    <form id="pclForm">
+        <div class="input-group">
+            <label>NOMBRE:</label>
+            <input type="text" name="patient_name">
+        </div>
+        <div class="input-group">
+            <label>FECHA:</label>
+            <input type="date" name="eval_date">
+        </div>
+
+        <div class="input-group">
+            <label>Describa brevemente su peor experiencia:</label>
+            <textarea name="experience_desc" rows="3"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>¿Hace cuánto tiempo ocurrió? (estimado):</label>
+            <input type="text" name="time_elapsed">
+        </div>
+
+        <div class="question-block">
+            <span class="question-text">¿El evento involucró muerte, amenaza de muerte, heridas serias o violencia sexual?</span>
+            <label><input type="radio" name="event_type" value="SI"> SÍ</label>
+            <label><input type="radio" name="event_type" value="NO"> NO</label>
+        </div>
+
+        <div class="question-block">
+            <span class="question-text">¿Cómo lo vivió?</span>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="lived_how" value="Directo"> Me sucedió a mí directamente.</label>
+                <label><input type="checkbox" name="lived_how" value="Testigo"> Fui testigo/a.</label>
+                <label><input type="checkbox" name="lived_how" value="Familiar"> Le pasó a un familiar o amigo cercano.</label>
+                <label><input type="checkbox" name="lived_how" value="Trabajo"> Expuesta/o repetidamente por mi trabajo (primer respondiente).</label>
+            </div>
+            <label>Otra forma: <input type="text" name="lived_other"></label>
+        </div>
+
+        <div class="question-block">
+            <span class="question-text">Si hubo muerte de un familiar/amigo, ¿cuál fue la causa?</span>
+            <div class="checkbox-group">
+                <label><input type="radio" name="death_cause" value="Violencia"> Accidente o violencia.</label>
+                <label><input type="radio" name="death_cause" value="Natural"> Causas naturales.</label>
+                <label><input type="radio" name="death_cause" value="NA"> No aplica.</label>
+            </div>
+        </div>
+
+        <hr>
+        <h3>Cuestionario de Síntomas (Último mes)</h3>
+        <p><small>0: Nada | 1: Un poco | 2: Moderadamente | 3: Bastante | 4: Extremadamente</small></p>
+
+        <div id="questions-container"></div>
+    </form>
+
+    <div id="result-container">
+        <div>Resultado PCL-5:</div>
+        <div class="score-display">Puntaje: <span id="totalScore">0</span>/80</div>
+        <div class="interpretation" id="diagResult">No cumple criterio de corte</div>
+    </div>
+
+    <div id="print-results">
+        <h3>Resumen Clínico</h3>
+        <p id="print-summary"></p>
+    </div>
+
+    <button class="btn-print" onclick="prepareAndPrint()">Imprimir / Guardar como PDF</button>
+</div>
+
+<script>
+    const questions = [
+        "Recuerdos repetidos, perturbadores e indeseados.",
+        "Sueños repetidos y perturbadores.",
+        "Sentir o actuar como si la experiencia estuviera sucediendo nuevamente.",
+        "Sentirse muy angustiado ante recordatorios.",
+        "Reacciones físicas intensas (latidos, sudoración) ante recordatorios.",
+        "Evitar recuerdos, pensamientos o sentimientos.",
+        "Evitar claves externas (personas, lugares, situaciones).",
+        "Dificultad para recordar partes importantes de la experiencia.",
+        "Creencias negativas fuertes sobre sí mismo, otros o el mundo.",
+        "Culparse a sí mismo o a otros por el evento o sus consecuencias.",
+        "Sentimientos negativos intensos (miedo, ira, culpa, vergüenza).",
+        "Pérdida de interés en actividades antes disfrutadas.",
+        "Sentirse distante o enajenado de otras personas.",
+        "Dificultad para sentir emociones positivas.",
+        "Irritabilidad, explosiones de rabia o agresividad.",
+        "Tomar demasiados riesgos o conductas autodestructivas.",
+        "Estar 'extremadamente alerta', vigilante o en guardia.",
+        "Sentirse muy nervioso o sobresaltarse fácilmente.",
+        "Dificultad para concentrarse.",
+        "Dificultad para dormirse o mantener el sueño."
+    ];
+
+    const container = document.getElementById('questions-container');
+    questions.forEach((q, i) => {
+        const div = document.createElement('div');
+        div.className = 'question-block';
+        div.innerHTML = `
+            <label class="question-text">${i + 1}. ${q}</label>
+            <select name="q${i + 1}" onchange="calculatePCL()">
+                <option value="0">0: Nada</option>
+                <option value="1">1: Un poco</option>
+                <option value="2">2: Moderadamente</option>
+                <option value="3">3: Bastante</option>
+                <option value="4">4: Extremadamente</option>
+            </select>
+        `;
+        container.appendChild(div);
+    });
+
+    function calculatePCL() {
+        const form = document.getElementById('pclForm');
+        const formData = new FormData(form);
+        let total = 0;
+        let scores = [];
+
+        for (let i = 1; i <= 20; i++) {
+            let val = parseInt(formData.get('q' + i) || 0);
+            total += val;
+            scores.push(val);
+        }
+
+        document.getElementById('totalScore').innerText = total;
+
+        // Lógica de Clusters (Puntaje >= 2 se considera síntoma presente)
+        const check = (arr) => arr.filter(idx => scores[idx-1] >= 2).length;
+        
+        const b = check([1, 2, 3, 4, 5]);
+        const c = check([6, 7]);
+        const d = check([8, 9, 10, 11, 12, 13, 14]);
+        const e = check([15, 16, 17, 18, 19, 20]);
+
+        let provisionalDiag = (total >= 33 && b >= 1 && c >= 1 && d >= 2 && e >= 2);
+        
+        let msg = total >= 33 ? "Sobre punto de corte (33). " : "Bajo punto de corte. ";
+        msg += provisionalDiag ? "Cumple criterios para diagnóstico provisional." : "No cumple criterios DSM-5 completos.";
+        
+        document.getElementById('diagResult').innerText = msg;
+        return { total, msg, clusters: `B:${b}, C:${c}, D:${d}, E:${e}` };
+    }
+
+    function prepareAndPrint() {
+        const results = calculatePCL();
+        const name = document.getElementsByName('patient_name')[0].value || "N/A";
+        const date = document.getElementsByName('eval_date')[0].value || "N/A";
+        
+        document.getElementById('print-summary').innerHTML = `
+            <strong>Paciente:</strong> ${name} | <strong>Fecha:</strong> ${date}<br>
+            <strong>Puntaje Total:</strong> ${results.total}/80<br>
+            <strong>Clusters (Síntomas presentes):</strong> ${results.clusters}<br>
+            <strong>Interpretación:</strong> ${results.msg}
+        `;
+        window.print();
+    }
+</script>
+
 </body>
 </html>
