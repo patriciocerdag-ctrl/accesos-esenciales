@@ -2,80 +2,312 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Deseos para Begoña</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Lista de Deseos - Begoña</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; background-color: #f9f9f9; }
-        table { border-collapse: collapse; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); background: white; }
-        th, td { border: 1px solid #ccc; padding: 12px; text-align: left; }
-        th { background-color: #444; color: white; }
-        button { 
-            padding: 10px 25px; cursor: pointer; background-color: #28a745; 
-            color: white; border: none; border-radius: 4px; font-size: 16px; margin-bottom: 20px;
+        /* --- VARIABLES DE DISEÑO --- */
+        :root {
+            --bg-color: #f4f5f7; /* Color de fondo general un poco más grisáceo/suave */
+            --primary-color: #f17480; /* Rosado de las pestañas */
+            --secondary-color: #f7a8b0;
+            --text-dark: #334155;
+            --text-light: #64748b;
+            --card-bg: #ffffff;
+            --btn-border: #2563eb; /* Azul del borde del botón */
+            --tab-inactive: #e2e8f0; /* Gris de la pestaña inactiva */
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius-lg: 16px;
+            --radius-full: 9999px;
         }
-        button:hover { background-color: #218838; }
-        #status { margin-bottom: 10px; color: #555; font-weight: bold; }
+
+        /* --- RESET Y ESTILOS GLOBALES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-dark);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* --- CABECERA --- */
+        header { text-align: center; margin-bottom: 20px; padding-top: 20px; }
+        h1 {
+            color: var(--primary-color); 
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        .actions { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        
+        /* Botón de Actualizar */
+        button#btnActualizar { 
+            padding: 10px 25px; 
+            cursor: pointer; 
+            background-color: #ffffff; 
+            color: var(--text-dark); 
+            border: 2px solid var(--btn-border); 
+            border-radius: var(--radius-full); 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.3s ease;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px;
+        }
+        button#btnActualizar:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        button#btnActualizar:active:not(:disabled) { transform: translateY(0); }
+        button#btnActualizar:disabled {
+            background-color: #ebebeb; /* Color gris al estar cargando */
+            cursor: wait;
+        }
+        
+        #status { color: var(--text-light); font-size: 1.05rem; font-weight: 700; height: 20px; }
+
+        /* --- PESTAÑAS --- */
+        .tabs { display: flex; gap: 15px; margin: 30px auto 40px auto; max-width: 800px; }
+        .tab-btn {
+            flex: 1; padding: 15px; border: none; border-radius: 12px; cursor: pointer; 
+            background-color: var(--tab-inactive); color: var(--text-dark); font-weight: 800; 
+            font-size: 1.05rem; transition: 0.3s; display: flex; align-items: center; justify-content: center;
+        }
+        .tab-btn:hover:not(.active) { background-color: #cbd5e1; }
+        .tab-btn.active { 
+            background-color: var(--primary-color); color: white; 
+            box-shadow: 0 4px 10px rgba(241,116,128,0.3); 
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* --- CONTENEDOR GRID --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- ESTILOS DE LA TARJETA --- */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+        .card-header {
+            padding: 12px 20px; font-size: 0.9rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        .card-image-container {
+            width: 100%; height: 200px; background-color: #f0f0f0; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .card-image-container img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;
+        }
+        .card:hover .card-image-container img { transform: scale(1.05); }
+
+        .card-body {
+            padding: 20px; flex-grow: 1; display: flex; flex-direction: column; 
+            align-items: center; text-align: center; gap: 15px;
+        }
+        .card-title { font-size: 1.25rem; font-weight: 700; color: var(--text-dark); line-height: 1.4; }
+        .tachado { text-decoration: line-through; color: var(--text-light); opacity: 0.7; }
+
+        .btn-link {
+            display: inline-block; padding: 10px 20px; background-color: #ffffff;
+            color: var(--primary-color); text-decoration: none; border-radius: var(--radius-full);
+            font-size: 0.9rem; font-weight: 800; border: 2px solid var(--secondary-color);
+            transition: all 0.2s ease; width: 100%; 
+        }
+        .btn-link:hover { background-color: var(--secondary-color); color: white; }
+
+        .card-footer { padding: 0 20px 20px 20px; display: flex; justify-content: center; }
+        .badge {
+            padding: 8px 16px; border-radius: var(--radius-full); font-size: 0.85rem;
+            font-weight: 700; text-align: center; width: 100%;
+        }
+
+        /* --- OCULTAR LOADER ANTERIOR YA QUE USAMOS SOLO TEXTO --- */
+        .loader { display: none; }
+
+        @media (max-width: 600px) { .tabs { flex-direction: column; } }
+        @media (max-width: 480px) { body { padding: 15px; } .card-title { font-size: 1.1rem; } }
     </style>
 </head>
 <body>
 
-    <h1>Begoña: Lista de deseos</h1>
-    <button onclick="cargarDatos()">🔄 Actualizar lista de deseos</button>
-    <div id="status">Listo.</div>
+    <header>
+        <h1>👶 Begoña: Lista de Deseos</h1>
+        <div class="actions">
+            <button id="btnActualizar" onclick="cargarDatos()">
+                <span id="btnIcono">🔄</span> 
+                <span id="btnTexto">Actualizar datos</span>
+            </button>
+            <div id="status">Presiona actualizar para ver la lista.</div>
+        </div>
+    </header>
 
-    <table id="tablaDatos">
-        <thead>
-            <tr id="headers"></tr>
-        </thead>
-        <tbody id="cuerpoTabla"></tbody>
-    </table>
+    <div class="tabs">
+        <button class="tab-btn active" id="btn-disp" onclick="cambiarPestana('disponibles')">🎁 Disponibles para regalar</button>
+        <button class="tab-btn" id="btn-comp" onclick="cambiarPestana('comprometidos')">✨ Lo tenemos / En camino 🚚</button>
+    </div>
+
+    <main>
+        <div id="sec-disponibles" class="tab-content active">
+            <div id="grid-disponibles" class="grid-container"></div>
+        </div>
+        <div id="sec-comprometidos" class="tab-content">
+            <div id="grid-comprometidos" class="grid-container"></div>
+        </div>
+    </main>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzBLy43_S5xypgdhxW9YWKSWlg1OS3iDadQ2s6JA2OtSG7oVc32PtbfBIF6rguqEjuLLA/exec"; // REEMPLAZA ESTO
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzBLy43_S5xypgdhxW9YWKSWlg1OS3iDadQ2s6JA2OtSG7oVc32PtbfBIF6rguqEjuLLA/exec"; 
+
+        function cambiarPestana(tipo) {
+            document.querySelectorAll('.tab-btn, .tab-content').forEach(el => el.classList.remove('active'));
+            if (tipo === 'disponibles') {
+                document.getElementById('btn-disp').classList.add('active');
+                document.getElementById('sec-disponibles').classList.add('active');
+            } else {
+                document.getElementById('btn-comp').classList.add('active');
+                document.getElementById('sec-comprometidos').classList.add('active');
+            }
+        }
 
         async function cargarDatos() {
             const status = document.getElementById('status');
-            const cuerpo = document.getElementById('cuerpoTabla');
-            const headersRow = document.getElementById('headers');
+            const gridDisp = document.getElementById('grid-disponibles');
+            const gridComp = document.getElementById('grid-comprometidos');
+            const btn = document.getElementById('btnActualizar');
             
-            status.innerText = "⏳ Cargando colores y datos...";
+            // --- ESTADO DE CARGA ---
+            status.innerHTML = "⏳ Cargando la lista de Begoña...";
+            btn.disabled = true;
+            
+            gridDisp.innerHTML = ""; 
+            gridComp.innerHTML = "";
+            
+            let countDisponibles = 0;
+            let countComprometidos = 0;
             
             try {
                 const response = await fetch(WEB_APP_URL);
                 const data = await response.json();
 
                 if (data.length > 0) {
-                    cuerpo.innerHTML = "";
-                    headersRow.innerHTML = "";
-
-                    // Crear cabeceras
                     const columnas = Object.keys(data[0]);
-                    columnas.forEach(col => {
-                        const th = document.createElement('th');
-                        th.innerText = col;
-                        headersRow.appendChild(th);
-                    });
+                    
+                    const colCategoria = columnas[0]; // A
+                    const colArticulo = columnas[1];  // B
+                    const colEstado = columnas[2];    // C
+                    const colImagen = columnas[3];    // D
+                    const colLink = columnas[4];      // E
 
-                    // Llenar filas aplicando los colores
                     data.forEach(fila => {
-                        const tr = document.createElement('tr');
-                        columnas.forEach(col => {
-                            const td = document.createElement('td');
-                            const celdaInfo = fila[col];
+                        const infoCategoria = fila[colCategoria];
+                        const infoArticulo = fila[colArticulo];
+                        const infoEstado = fila[colEstado];
+                        
+                        const infoImagenUrl = fila[colImagen] ? fila[colImagen].valor : "";
+                        const infoLinkUrl = fila[colLink] ? fila[colLink].valor : "";
+
+                        const card = document.createElement('article');
+                        card.className = 'card';
+
+                        const header = document.createElement('div');
+                        header.className = 'card-header';
+                        header.innerText = infoCategoria.valor;
+                        header.style.backgroundColor = infoCategoria.fondo;
+                        header.style.color = infoCategoria.texto;
+                        card.appendChild(header);
+
+                        if (infoImagenUrl && infoImagenUrl.trim() !== "") {
+                            const imageContainer = document.createElement('div');
+                            imageContainer.className = 'card-image-container';
                             
-                            td.innerText = celdaInfo.valor;
-                            // Aplicar estilos directamente desde los datos de Sheets
-                            td.style.backgroundColor = celdaInfo.fondo;
-                            td.style.color = celdaInfo.texto;
+                            const img = document.createElement('img');
+                            img.src = infoImagenUrl;
+                            img.alt = infoArticulo.valor; 
+                            img.onerror = function() { this.style.display = 'none'; }; 
                             
-                            tr.appendChild(td);
-                        });
-                        cuerpo.appendChild(tr);
+                            imageContainer.appendChild(img);
+                            card.appendChild(imageContainer);
+                        }
+
+                        const body = document.createElement('div');
+                        body.className = 'card-body';
+                        
+                        const title = document.createElement('h3');
+                        title.className = 'card-title';
+                        title.innerText = infoArticulo.valor;
+                        
+                        if (infoEstado.valor.toLowerCase().includes('lo tenemos')) {
+                            title.classList.add('tachado');
+                        }
+                        body.appendChild(title);
+
+                        if (infoLinkUrl && infoLinkUrl.trim() !== "" && infoLinkUrl.startsWith('http')) {
+                            const btnLink = document.createElement('a');
+                            btnLink.className = 'btn-link';
+                            btnLink.href = infoLinkUrl;
+                            btnLink.target = "_blank"; 
+                            btnLink.innerText = "🛒 Ver en tienda";
+                            body.appendChild(btnLink);
+                        }
+
+                        card.appendChild(body);
+
+                        const footer = document.createElement('div');
+                        footer.className = 'card-footer';
+                        
+                        const badge = document.createElement('div');
+                        badge.className = 'badge';
+                        badge.innerText = infoEstado.valor;
+                        badge.style.backgroundColor = infoEstado.fondo;
+                        badge.style.color = infoEstado.texto;
+
+                        footer.appendChild(badge);
+                        card.appendChild(footer);
+
+                        const estadoTexto = infoEstado.valor.toLowerCase();
+                        if (estadoTexto.includes("disponible")) {
+                            gridDisp.appendChild(card);
+                            countDisponibles++;
+                        } else {
+                            gridComp.appendChild(card);
+                            countComprometidos++;
+                        }
                     });
-                    status.innerText = "✅ Datos actualizados.";
+                    
+                    // --- ACTUALIZACIÓN DE TEXTOS Y ESTADO DE ÉXITO ---
+                    document.getElementById('btn-disp').innerText = `🎁 Disponibles para regalar (${countDisponibles})`;
+                    document.getElementById('btn-comp').innerText = `✨ Lo tenemos / En camino 🚚 (${countComprometidos})`;
+                    status.innerHTML = "✅ Lista actualizada.";
+                    
+                } else {
+                    status.innerText = "La lista está vacía actualmente.";
                 }
             } catch (error) {
                 console.error(error);
-                status.innerText = "❌ Error al cargar.";
+                status.innerText = "❌ Ocurrió un error al cargar los datos.";
+            } finally {
+                btn.disabled = false;
             }
         }
 
