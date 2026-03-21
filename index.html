@@ -2,243 +2,322 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Lista de Deseos - Begoña</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Deseos de Begoña</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* --- VARIABLES DE DISEÑO --- */
+        /* --- 1. VARIABLES Y ESTÉTICA (A11Y & Baby-Friendly) --- */
         :root {
-            --bg-color: #f4f5f7; 
-            --primary-color: #f17480; 
-            --secondary-color: #f7a8b0;
-            --text-dark: #334155;
-            --text-light: #64748b;
-            --card-bg: #ffffff;
-            --btn-border: #2563eb; 
-            --tab-inactive: #e2e8f0; 
-            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --radius-lg: 16px;
-            --radius-full: 9999px;
+            --primary-dark: #B83269;      
+            --primary-light: #FFE4EC;     
+            --bg-body: #FAF8F9;           
+            --bg-card: #FFFFFF;           
+            --text-main: #2D3748;         
+            --text-muted: #718096;        
+            
+            --badge-green-bg: #C6F6D5;
+            --badge-green-text: #22543D;
+            --badge-blue-bg: #BEE3F8;
+            --badge-blue-text: #2A4365;
+
+            --radius-card: 1rem;
+            --radius-btn: 2rem;
+            --transition: all 0.3s ease;
         }
 
-        /* --- RESET Y ESTILOS GLOBALES --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* --- 2. RESET Y ESTILOS BASE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body { 
-            font-family: 'Nunito', sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--text-dark);
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        /* --- CABECERA --- */
-        header { text-align: center; margin-bottom: 20px; padding-top: 20px; }
-        h1 {
-            color: var(--primary-color); 
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 20px;
-            letter-spacing: -0.5px;
-        }
-        .actions { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 25px; }
-        
-        /* Botón de Actualizar */
-        button#btnActualizar { 
-            padding: 10px 25px; 
-            cursor: pointer; 
-            background-color: #ffffff; 
-            color: var(--text-dark); 
-            border: 2px solid var(--btn-border); 
-            border-radius: var(--radius-full); 
-            font-size: 1.1rem; 
-            font-weight: 700; 
-            font-family: 'Nunito', sans-serif;
-            transition: all 0.3s ease;
-            display: inline-flex; 
-            align-items: center; 
-            gap: 8px;
-        }
-        button#btnActualizar:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-        button#btnActualizar:active:not(:disabled) { transform: translateY(0); }
-        button#btnActualizar:disabled {
-            background-color: #ebebeb; 
-            cursor: wait;
-        }
-        
-        #status { color: var(--text-light); font-size: 1.05rem; font-weight: 700; height: 20px; }
-
-        /* --- MENSAJE DE REGALOS COMPACTO --- */
-        .gift-message {
-            background-color: var(--card-bg);
-            border: 2px solid #ffe4e6;
-            color: var(--text-dark);
-            padding: 18px 25px;
-            border-radius: var(--radius-lg);
-            margin: 0 auto 25px auto;
-            max-width: 800px;
-            font-size: 0.95rem;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-body); 
+            color: var(--text-main);
             line-height: 1.5;
-            box-shadow: var(--shadow-sm);
-            text-align: center;
-        }
-        .gift-message p { margin: 8px 0; }
-        .gift-message .intro { font-size: 1.05rem; font-weight: 800; color: var(--primary-color); margin-bottom: 12px; }
-        .gift-message strong { color: var(--primary-color); font-weight: 800; }
-        .gift-message .sign-off { 
-            display: block; 
-            margin-top: 15px; 
-            font-weight: 800; 
-            font-size: 1.05rem; 
-            color: var(--primary-color); 
+            padding: 1rem;
         }
 
-        /* --- PESTAÑAS --- */
-        .tabs { display: flex; gap: 15px; margin: 10px auto 40px auto; max-width: 800px; }
-        .tab-btn {
-            flex: 1; padding: 15px; border: none; border-radius: 12px; cursor: pointer; 
-            background-color: var(--tab-inactive); color: var(--text-dark); font-weight: 800; 
-            font-size: 1.05rem; transition: 0.3s; display: flex; align-items: center; justify-content: center;
-        }
-        .tab-btn:hover:not(.active) { background-color: #cbd5e1; }
-        .tab-btn.active { 
-            background-color: var(--primary-color); color: white; 
-            box-shadow: 0 4px 10px rgba(241,116,128,0.3); 
-        }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        /* --- CONTENEDOR GRID --- */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
+        .container {
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        /* --- ESTILOS DE LA TARJETA --- */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* --- 3. ENCABEZADO Y CONTROLES --- */
+        .header-section {
+            text-align: center;
+            margin: 2rem 0;
             display: flex;
             flex-direction: column;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-
-        .card-header {
-            padding: 12px 20px; font-size: 0.9rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 1px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .card-image-container {
-            width: 100%; height: 200px; background-color: #f0f0f0; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
+        h1 { 
+            color: var(--primary-dark); 
+            font-size: 2rem;
+            font-weight: 700;
         }
-        .card-image-container img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;
-        }
-        .card:hover .card-image-container img { transform: scale(1.05); }
 
-        .card-body {
-            padding: 20px; flex-grow: 1; display: flex; flex-direction: column; 
-            align-items: center; text-align: center; gap: 15px;
+        .welcome-message {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 1.2rem;
+            border-radius: var(--radius-card);
+            font-size: 0.95rem;
+            max-width: 600px;
+            text-align: left;
+            border: 1px solid #FBCFE8;
+            box-shadow: 0 4px 6px rgba(184, 50, 105, 0.05);
         }
-        .card-title { font-size: 1.25rem; font-weight: 700; color: var(--text-dark); line-height: 1.4; }
-        .tachado { text-decoration: line-through; color: var(--text-light); opacity: 0.7; }
 
+        .welcome-message p { margin-bottom: 0.8rem; }
+        .welcome-message p:last-child { margin-bottom: 0; }
+
+        .btn-actualizar { 
+            padding: 0.8rem 1.5rem; 
+            min-height: 48px; 
+            cursor: pointer; 
+            background-color: var(--bg-card); 
+            color: var(--text-main); 
+            border: 2px solid #E2E8F0; 
+            border-radius: var(--radius-btn); 
+            font-size: 1rem; 
+            font-weight: 600;
+            font-family: inherit;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: var(--transition);
+        }
+
+        .btn-actualizar:hover { 
+            border-color: var(--primary-dark);
+            color: var(--primary-dark);
+        }
+
+        #status { 
+            font-size: 0.9rem; 
+            color: var(--text-muted); 
+            font-weight: 400; 
+        }
+
+        /* --- 4. SISTEMA DE PESTAÑAS (TABS) --- */
+        .tabs {
+            display: flex;
+            flex-direction: column; 
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            width: 100%;
+            min-height: 48px; 
+            padding: 1rem; 
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 600;
+            border: 2px solid transparent;
+            border-radius: var(--radius-card);
+            cursor: pointer;
+            background-color: #EDF2F7;
+            color: var(--text-muted);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: #FBCFE8;
+        }
+
+        .tab-content {
+            display: none;
+            /* Optimización: Animación más ligera para la GPU */
+            animation: fadeIn 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 5. DISEÑO MOBILE-FIRST: TABLAS COMO TARJETAS (CARDS) --- */
+        thead { display: none; }
+        table, tbody, tr, td { display: block; width: 100%; }
+
+        tr {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #F1F5F9;
+        }
+
+        td {
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        td:last-child { margin-bottom: 0; border-bottom: none; }
+
+        td::before {
+            content: attr(data-label);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        td.item-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        td.item-title::before { display: none; }
+
+        /* --- 6. COMPONENTES: BOTONES Y BADGES --- */
         .btn-link {
-            display: inline-block; padding: 10px 20px; background-color: #ffffff;
-            color: var(--primary-color); text-decoration: none; border-radius: var(--radius-full);
-            font-size: 0.9rem; font-weight: 800; border: 2px solid var(--secondary-color);
-            transition: all 0.2s ease; width: 100%; 
+            display: inline-block;
+            background-color: var(--text-main);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-btn);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
         }
-        .btn-link:hover { background-color: var(--secondary-color); color: white; }
+        
+        .btn-link:hover { background-color: var(--primary-dark); }
 
-        .card-footer { padding: 0 20px 20px 20px; display: flex; justify-content: center; }
         .badge {
-            padding: 8px 16px; border-radius: var(--radius-full); font-size: 0.85rem;
-            font-weight: 700; text-align: center; width: 100%;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-btn);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
         }
 
-        .loader { display: none; }
+        .badge-disponible { background-color: var(--badge-green-bg); color: var(--badge-green-text); }
+        .badge-comprometido { background-color: var(--badge-blue-bg); color: var(--badge-blue-text); }
 
-        @media (max-width: 600px) { .tabs { flex-direction: column; } }
-        @media (max-width: 480px) { body { padding: 15px; } .card-title { font-size: 1.1rem; } .gift-message { font-size: 0.9rem; padding: 15px; } }
+        /* --- 7. ESCRITORIO (MEDIA QUERIES) --- */
+        @media (min-width: 768px) {
+            .tabs { flex-direction: row; }
+            .tab-btn { flex: 1; }
+
+            .table-wrapper {
+                background: var(--bg-card);
+                border-radius: var(--radius-card);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+                overflow: hidden;
+            }
+
+            table { display: table; border-collapse: collapse; }
+            thead { display: table-header-group; background-color: #F8FAFC; }
+            tbody { display: table-row-group; }
+            tr { 
+                display: table-row; 
+                box-shadow: none; 
+                margin: 0; 
+                padding: 0; 
+                border-radius: 0;
+                border-bottom: 1px solid #E2E8F0;
+            }
+            tr:last-child { border-bottom: none; }
+            th, td { display: table-cell; padding: 1.5rem 1rem; vertical-align: middle; }
+            th { text-transform: uppercase; font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; text-align: left; }
+            td::before { display: none; }
+            td.item-title { font-size: 1.1rem; }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>👶 Begoña: Lista de Deseos</h1>
-        
-        <div class="actions">
-            <button id="btnActualizar" onclick="cargarDatos()">
-                <span id="btnIcono">🔄</span> 
-                <span id="btnTexto">Actualizar datos</span>
+    <main class="container">
+        <header class="header-section">
+            <h1>👶 Lista de Deseos de Begoña</h1>
+            
+            <div class="welcome-message">
+                <p>¡Gracias por acompañarnos en esta dulce espera! 💖 En la pestaña de <strong>Disponibles</strong> puedes ver algunas ideas de regalitos que nos harían mucha ilusión.</p>
+                <p>👗 <em>Un pequeño favor:</em> Si decides regalarnos ropita o pañales, te agradeceríamos muchísimo que sean para tallas de <strong>3 meses en adelante</strong> para que Begoña pueda aprovecharlos por más tiempo.</p>
+            </div>
+
+            <button class="btn-actualizar" onclick="cargarDatos()">🔄 Actualizar lista</button>
+            <div id="status" aria-live="polite">Listo.</div>
+        </header>
+
+        <nav class="tabs" aria-label="Filtros de lista">
+            <button class="tab-btn active" id="btn-disponibles" onclick="cambiarPestana('disponibles')">
+                🎁 Disponibles para regalar
             </button>
-            <div id="status">Presiona actualizar para ver la lista.</div>
-        </div>
+            <button class="tab-btn" id="btn-comprometidos" onclick="cambiarPestana('comprometidos')">
+                ✅ Lo tenemos
+            </button>
+        </nav>
 
-        <div class="gift-message">
-            <p class="intro">¡Gracias por acompañarnos en esta dulce espera!</p>
-            
-            <p>🍼 Por defecto verás la lista de <strong>🎁 Disponibles para regalar</strong>, donde puedes elegir el detalle que desees. Si prefieres regalarnos pañales o ropita (que siempre son bienvenidos), te agradeceríamos de corazón que sean de tallas <strong>desde los 3 meses en adelante</strong>.</p>
-            
-            <p>Lo que está en <strong>✨ Lo tenemos / En camino 🚚</strong> ya está cubierto porque nos llegó, ya fue regalado, o alguien se comprometió a que iba a llegar.</p>
-            
-            <span class="sign-off">Atentamente, los papis de la Bego ❤️, Cata y Pato</span>
-        </div>
-    </header>
+        <section id="seccion-disponibles" class="tab-content active">
+            <div class="table-wrapper">
+                <table id="tablaDisponibles">
+                    <thead><tr id="headersDisponibles"></tr></thead>
+                    <tbody id="cuerpoDisponibles"></tbody>
+                </table>
+            </div>
+        </section>
 
-    <div class="tabs">
-        <button class="tab-btn active" id="btn-disp" onclick="cambiarPestana('disponibles')">🎁 Disponibles para regalar</button>
-        <button class="tab-btn" id="btn-comp" onclick="cambiarPestana('comprometidos')">✨ Lo tenemos / En camino 🚚</button>
-    </div>
-
-    <main>
-        <div id="sec-disponibles" class="tab-content active">
-            <div id="grid-disponibles" class="grid-container"></div>
-        </div>
-        <div id="sec-comprometidos" class="tab-content">
-            <div id="grid-comprometidos" class="grid-container"></div>
-        </div>
+        <section id="seccion-comprometidos" class="tab-content">
+            <div class="table-wrapper">
+                <table id="tablaComprometidos">
+                    <thead><tr id="headersComprometidos"></tr></thead>
+                    <tbody id="cuerpoComprometidos"></tbody>
+                </table>
+            </div>
+        </section>
     </main>
 
     <script>
+        // --- CONFIGURACIÓN ---
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzBLy43_S5xypgdhxW9YWKSWlg1OS3iDadQ2s6JA2OtSG7oVc32PtbfBIF6rguqEjuLLA/exec"; 
+        const COLUMNA_ESTADO = "Estado"; 
+        // ---------------------
 
-        function cambiarPestana(tipo) {
-            document.querySelectorAll('.tab-btn, .tab-content').forEach(el => el.classList.remove('active'));
-            if (tipo === 'disponibles') {
-                document.getElementById('btn-disp').classList.add('active');
-                document.getElementById('sec-disponibles').classList.add('active');
+        function cambiarPestana(pestana) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            if (pestana === 'disponibles') {
+                document.getElementById('btn-disponibles').classList.add('active');
+                document.getElementById('seccion-disponibles').classList.add('active');
             } else {
-                document.getElementById('btn-comp').classList.add('active');
-                document.getElementById('sec-comprometidos').classList.add('active');
+                document.getElementById('btn-comprometidos').classList.add('active');
+                document.getElementById('seccion-comprometidos').classList.add('active');
             }
         }
 
         async function cargarDatos() {
             const status = document.getElementById('status');
-            const gridDisp = document.getElementById('grid-disponibles');
-            const gridComp = document.getElementById('grid-comprometidos');
-            const btn = document.getElementById('btnActualizar');
-            
-            status.innerHTML = "⏳ Cargando la lista de Begoña...";
-            btn.disabled = true;
-            
-            gridDisp.innerHTML = ""; 
-            gridComp.innerHTML = "";
-            
-            let countDisponibles = 0;
-            let countComprometidos = 0;
+            status.innerText = "⏳ Cargando los regalitos para Begoña...";
             
             try {
                 const response = await fetch(WEB_APP_URL);
@@ -246,102 +325,100 @@
 
                 if (data.length > 0) {
                     const columnas = Object.keys(data[0]);
-                    
-                    const colCategoria = columnas[0]; 
-                    const colArticulo = columnas[1];  
-                    const colEstado = columnas[2];    
-                    const colImagen = columnas[3];    
-                    const colLink = columnas[4];      
 
-                    data.forEach(fila => {
-                        const infoCategoria = fila[colCategoria];
-                        const infoArticulo = fila[colArticulo];
-                        const infoEstado = fila[colEstado];
-                        
-                        const infoImagenUrl = fila[colImagen] ? fila[colImagen].valor : "";
-                        const infoLinkUrl = fila[colLink] ? fila[colLink].valor : "";
-
-                        const card = document.createElement('article');
-                        card.className = 'card';
-
-                        const header = document.createElement('div');
-                        header.className = 'card-header';
-                        header.innerText = infoCategoria.valor;
-                        header.style.backgroundColor = infoCategoria.fondo;
-                        header.style.color = infoCategoria.texto;
-                        card.appendChild(header);
-
-                        if (infoImagenUrl && infoImagenUrl.trim() !== "") {
-                            const imageContainer = document.createElement('div');
-                            imageContainer.className = 'card-image-container';
-                            
-                            const img = document.createElement('img');
-                            img.src = infoImagenUrl;
-                            img.alt = infoArticulo.valor; 
-                            img.onerror = function() { this.style.display = 'none'; }; 
-                            
-                            imageContainer.appendChild(img);
-                            card.appendChild(imageContainer);
-                        }
-
-                        const body = document.createElement('div');
-                        body.className = 'card-body';
-                        
-                        const title = document.createElement('h3');
-                        title.className = 'card-title';
-                        title.innerText = infoArticulo.valor;
-                        
-                        if (infoEstado.valor.toLowerCase().includes('lo tenemos')) {
-                            title.classList.add('tachado');
-                        }
-                        body.appendChild(title);
-
-                        if (infoLinkUrl && infoLinkUrl.trim() !== "" && infoLinkUrl.startsWith('http')) {
-                            const btnLink = document.createElement('a');
-                            btnLink.className = 'btn-link';
-                            btnLink.href = infoLinkUrl;
-                            btnLink.target = "_blank"; 
-                            btnLink.innerText = "🛒 Ver en tienda";
-                            body.appendChild(btnLink);
-                        }
-
-                        card.appendChild(body);
-
-                        const footer = document.createElement('div');
-                        footer.className = 'card-footer';
-                        
-                        const badge = document.createElement('div');
-                        badge.className = 'badge';
-                        badge.innerText = infoEstado.valor;
-                        badge.style.backgroundColor = infoEstado.fondo;
-                        badge.style.color = infoEstado.texto;
-
-                        footer.appendChild(badge);
-                        card.appendChild(footer);
-
-                        const estadoTexto = infoEstado.valor.toLowerCase();
-                        if (estadoTexto.includes("disponible")) {
-                            gridDisp.appendChild(card);
-                            countDisponibles++;
-                        } else {
-                            gridComp.appendChild(card);
-                            countComprometidos++;
-                        }
+                    const disponibles = data.filter(fila => {
+                        const estado = fila[COLUMNA_ESTADO] ? fila[COLUMNA_ESTADO].valor : "";
+                        return estado.includes("Disponible para regalar");
                     });
-                    
-                    document.getElementById('btn-disp').innerText = `🎁 Disponibles para regalar (${countDisponibles})`;
-                    document.getElementById('btn-comp').innerText = `✨ Lo tenemos / En camino 🚚 (${countComprometidos})`;
-                    status.innerHTML = "✅ Lista actualizada.";
-                    
+
+                    const comprometidos = data.filter(fila => {
+                        const estado = fila[COLUMNA_ESTADO] ? fila[COLUMNA_ESTADO].valor : "";
+                        return estado.includes("En camino") || estado.includes("comprometido") || estado.includes("Lo tenemos");
+                    });
+
+                    dibujarTabla(disponibles, columnas, 'headersDisponibles', 'cuerpoDisponibles');
+                    dibujarTabla(comprometidos, columnas, 'headersComprometidos', 'cuerpoComprometidos');
+
+                    document.getElementById('btn-disponibles').innerText = `🎁 Disponibles (${disponibles.length})`;
+                    document.getElementById('btn-comprometidos').innerText = `✅ Lo tenemos (${comprometidos.length})`;
+
+                    status.innerText = "✅ Lista actualizada correctamente.";
                 } else {
-                    status.innerText = "La lista está vacía actualmente.";
+                    status.innerText = "⚠️ Aún no hay datos en la hoja.";
                 }
             } catch (error) {
                 console.error(error);
-                status.innerText = "❌ Ocurrió un error al cargar los datos.";
-            } finally {
-                btn.disabled = false;
+                status.innerText = "❌ Hubo un error al conectar con la lista.";
             }
+        }
+
+        function dibujarTabla(datosAgrupados, columnas, idHeaders, idCuerpo) {
+            const headersRow = document.getElementById(idHeaders);
+            const cuerpo = document.getElementById(idCuerpo);
+
+            headersRow.innerHTML = "";
+            cuerpo.innerHTML = "";
+
+            // Optimización: Uso de DocumentFragment para evitar repintados múltiples
+            const headersFragment = document.createDocumentFragment();
+            columnas.forEach(col => {
+                const th = document.createElement('th');
+                th.innerText = col;
+                headersFragment.appendChild(th);
+            });
+            headersRow.appendChild(headersFragment);
+
+            const cuerpoFragment = document.createDocumentFragment();
+
+            if(datosAgrupados.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = columnas.length;
+                td.innerHTML = "<strong>No hay regalitos en esta categoría por ahora.</strong>";
+                td.style.textAlign = "center";
+                td.style.padding = "3rem 1rem";
+                td.style.color = "var(--text-muted)";
+                tr.appendChild(td);
+                cuerpoFragment.appendChild(tr);
+            } else {
+                datosAgrupados.forEach(fila => {
+                    const tr = document.createElement('tr');
+                    
+                    columnas.forEach((col, index) => {
+                        const td = document.createElement('td');
+                        td.setAttribute('data-label', col);
+                        
+                        if (index === 1 || col.toLowerCase().includes('artículo') || col.toLowerCase().includes('regalo')) {
+                            td.classList.add('item-title');
+                        }
+
+                        const celdaInfo = fila[col];
+                        
+                        if(celdaInfo && celdaInfo.valor) {
+                            let textoValor = celdaInfo.valor.toString();
+
+                            if (textoValor.startsWith('http://') || textoValor.startsWith('https://')) {
+                                td.innerHTML = `<a href="${textoValor}" target="_blank" rel="noopener noreferrer" class="btn-link">Ver Producto</a>`;
+                            } 
+                            else if (col === COLUMNA_ESTADO) {
+                                let badgeClass = textoValor.includes('Disponible') ? 'badge-disponible' : 'badge-comprometido';
+                                td.innerHTML = `<span class="badge ${badgeClass}">${textoValor}</span>`;
+                            } 
+                            else {
+                                td.innerText = textoValor;
+                            }
+                        } else {
+                            td.innerText = "—";
+                        }
+                        
+                        tr.appendChild(td);
+                    });
+                    cuerpoFragment.appendChild(tr);
+                });
+            }
+            
+            // Inyectamos todo el HTML construido de una sola vez
+            cuerpo.appendChild(cuerpoFragment);
         }
 
         window.onload = cargarDatos;
