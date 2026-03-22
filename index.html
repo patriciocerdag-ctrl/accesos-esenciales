@@ -11,23 +11,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. VARIABLES Y ESTÉTICA (A11Y & Baby-Friendly) --- */
+        /* --- 1. VARIABLES Y ESTÉTICA (Boutique & Soft UI) --- */
         :root {
+            /* Paleta de colores */
             --primary-dark: #B83269;      
-            --primary-light: #FFE4EC;     
-            --bg-body: #FAF8F9;           
-            --bg-card: #FFFFFF;           
-            --text-main: #2D3748;         
-            --text-muted: #718096;        
+            --primary-light: #FFF0F5; /* Blanco roto más suave */     
+            --bg-body-start: #FDFBFB; 
+            --bg-body-end: #F4EFF2; /* Gradiente sutil para el fondo */
+            --bg-card: #FFFFFF;            
+            --text-main: #2D3748;          
+            --text-muted: #718096;         
             
-            --badge-green-bg: #C6F6D5;
-            --badge-green-text: #22543D;
-            --badge-blue-bg: #BEE3F8;
-            --badge-blue-text: #2A4365;
-
-            --radius-card: 1rem;
+            /* Colores de estado (contraste accesible) */
+            --badge-avail-bg: #FCE7F3; 
+            --badge-avail-text: #9D174D; 
+            --badge-taken-bg: #D1FAE5;
+            --badge-taken-text: #065F46;
+            
+            /* Radios y Sombras */
+            --radius-card: 1.5rem;
             --radius-btn: 2rem;
-            --transition: all 0.3s ease;
+            --shadow-soft: 0 10px 40px -10px rgba(184, 50, 105, 0.08);
+            --shadow-hover: 0 16px 50px -12px rgba(184, 50, 105, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* --- 2. RESET Y ESTILOS BASE --- */
@@ -35,221 +41,338 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Elimina destello en móviles */
         }
 
         body { 
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-body); 
+            background: linear-gradient(135deg, var(--bg-body-start) 0%, var(--bg-body-end) 100%);
+            min-height: 100vh;
             color: var(--text-main);
-            line-height: 1.5;
+            line-height: 1.6;
             padding: 1rem;
+            padding-bottom: 120px; /* Espacio para el nav flotante */
+            overflow-x: hidden; 
         }
 
         .container {
+            width: 100%;
             max-width: 900px;
             margin: 0 auto;
         }
 
-        /* --- 3. ENCABEZADO Y CONTROLES --- */
+        /* Accesibilidad: Foco visible solo por teclado */
+        :focus-visible {
+            outline: 3px solid var(--primary-dark);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* --- 3. ENCABEZADO Y MENSAJE COLAPSABLE --- */
         .header-section {
             text-align: center;
             margin: 2rem 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         h1 { 
             color: var(--primary-dark); 
-            font-size: 2rem;
+            font-size: clamp(1.8rem, 5vw, 2.5rem); 
             font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
-        .welcome-message {
-            background-color: var(--primary-light);
-            color: var(--primary-dark);
-            padding: 1.2rem;
+        /* Diseño del Acordeón Nativo (Details) */
+        .welcome-collapsible {
+            width: 100%;
+            max-width: 650px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             border-radius: var(--radius-card);
-            font-size: 0.95rem;
-            max-width: 600px;
-            text-align: left;
-            border: 1px solid #FBCFE8;
-            box-shadow: 0 4px 6px rgba(184, 50, 105, 0.05);
-        }
-
-        .welcome-message p { margin-bottom: 0.8rem; }
-        .welcome-message p:last-child { margin-bottom: 0; }
-
-        .btn-actualizar { 
-            padding: 0.8rem 1.5rem; 
-            min-height: 48px; 
-            cursor: pointer; 
-            background-color: var(--bg-card); 
-            color: var(--text-main); 
-            border: 2px solid #E2E8F0; 
-            border-radius: var(--radius-btn); 
-            font-size: 1rem; 
-            font-weight: 600;
-            font-family: inherit;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(8px);
+            overflow: hidden;
             transition: var(--transition);
         }
 
-        .btn-actualizar:hover { 
-            border-color: var(--primary-dark);
+        .welcome-collapsible summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1.2rem;
+            font-weight: 600;
             color: var(--primary-dark);
-        }
-
-        #status { 
-            font-size: 0.9rem; 
-            color: var(--text-muted); 
-            font-weight: 400; 
-        }
-
-        /* --- 4. SISTEMA DE PESTAÑAS (TABS) --- */
-        .tabs {
+            font-size: 1.1rem;
             display: flex;
-            flex-direction: column; 
-            gap: 0.8rem;
-            margin-bottom: 2rem;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px; /* Touch target accesible */
+        }
+
+        .welcome-collapsible summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .welcome-collapsible[open] summary {
+            border-bottom: 1px solid rgba(184, 50, 105, 0.1);
+        }
+
+        .welcome-content {
+            padding: 1.5rem;
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .welcome-content p { margin-bottom: 1rem; }
+        .welcome-content p:last-child { margin-bottom: 0; }
+
+        /* --- 4. NAVEGACIÓN FLOTANTE (GLASSMORPHISM) --- */
+        .floating-nav {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            z-index: 1000;
+            width: 90%;
+            max-width: 500px;
+            /* Glassmorphism refinado */
+            background-color: rgba(255, 255, 255, 0.75); 
+            backdrop-filter: blur(16px) saturate(180%); 
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            padding: 8px;
+            border-radius: 50px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         .tab-btn {
-            width: 100%;
+            flex: 1; 
             min-height: 48px; 
-            padding: 1rem; 
-            font-size: 1rem;
+            padding: 0.5rem; 
+            font-size: 0.95rem;
             font-family: inherit;
             font-weight: 600;
-            border: 2px solid transparent;
-            border-radius: var(--radius-card);
+            border: none;
+            border-radius: 40px;
             cursor: pointer;
-            background-color: #EDF2F7;
+            background-color: transparent;
             color: var(--text-muted);
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
         }
 
         .tab-btn.active {
-            background-color: var(--primary-light);
+            background-color: var(--bg-card);
             color: var(--primary-dark);
-            border-color: #FBCFE8;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
+        .btn-refresh {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--primary-dark);
+        }
+
+        .btn-refresh:hover, .btn-refresh:active {
+            background-color: #FCE7F3;
+            transform: rotate(45deg) scale(1.05);
+        }
+
+        /* --- 5. MENSAJE DE ESTADO FLOTANTE --- */
+        .status-msg { 
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: var(--text-main);
+            color: #FFFFFF;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            text-align: center;
+            z-index: 999;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .status-msg.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* --- 6. ANIMACIÓN Y CONTENIDO DE PESTAÑAS --- */
         .tab-content {
             display: none;
-            /* Optimización: Animación más ligera para la GPU */
-            animation: fadeIn 0.4s ease-out forwards;
+            animation: softFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             opacity: 0;
+            width: 100%;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+        @keyframes softFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- 5. DISEÑO MOBILE-FIRST: TABLAS COMO TARJETAS (CARDS) --- */
-        thead { display: none; }
-        table, tbody, tr, td { display: block; width: 100%; }
-
-        tr {
-            background: var(--bg-card);
-            border-radius: var(--radius-card);
-            margin-bottom: 1.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-            border: 1px solid #F1F5F9;
+        /* Estilo para los mensajes descriptivos de cada pestaña */
+        .tab-description {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            margin: 0.5rem auto 1.5rem auto;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: var(--shadow-soft);
+            max-width: 800px;
+            line-height: 1.5;
         }
 
-        td {
-            margin-bottom: 1.2rem;
+        /* --- 7. DISEÑO TIPO TARJETA (ARTICLES) --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 1.5rem;
+            width: 100%;
+            padding: 0.5rem 0;
+        }
+
+        .gift-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-soft);
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            padding: 1.8rem;
+            border: 1px solid #FFFFFF;
+            transition: var(--transition);
         }
 
-        td:last-child { margin-bottom: 0; border-bottom: none; }
+        .gift-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            background-color: #FFFFFF;
+        }
 
-        td::before {
-            content: attr(data-label);
+        .card-category {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        td.item-title {
+        .item-title {
             font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--text-main);
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
         }
 
-        td.item-title::before { display: none; }
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-        /* --- 6. COMPONENTES: BOTONES Y BADGES --- */
+        .badge {
+            padding: 8px 16px;
+            border-radius: 12px; 
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: max-content;
+        }
+
+        .badge-disponible { 
+            background-color: var(--badge-avail-bg); 
+            color: var(--badge-avail-text); 
+        }
+        
+        .badge-comprometido { 
+            background-color: var(--badge-taken-bg); 
+            color: var(--badge-taken-text); 
+        }
+
         .btn-link {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: var(--text-main);
             color: white;
-            padding: 0.6rem 1.2rem;
+            min-height: 48px; /* Touch target */
+            padding: 0 1.5rem;
             border-radius: var(--radius-btn);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             transition: var(--transition);
         }
         
-        .btn-link:hover { background-color: var(--primary-dark); }
-
-        .badge {
-            padding: 0.4rem 0.8rem;
-            border-radius: var(--radius-btn);
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
+        .btn-link:hover, .btn-link:focus-visible { 
+            background-color: var(--primary-dark); 
+            transform: scale(1.02);
         }
 
-        .badge-disponible { background-color: var(--badge-green-bg); color: var(--badge-green-text); }
-        .badge-comprometido { background-color: var(--badge-blue-bg); color: var(--badge-blue-text); }
+        .empty-msg {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-muted);
+            width: 100%;
+            font-size: 1.1rem;
+        }
 
-        /* --- 7. ESCRITORIO (MEDIA QUERIES) --- */
+        /* --- 8. ESCRITORIO (MEDIA QUERIES) --- */
         @media (min-width: 768px) {
-            .tabs { flex-direction: row; }
-            .tab-btn { flex: 1; }
-
-            .table-wrapper {
-                background: var(--bg-card);
-                border-radius: var(--radius-card);
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-                overflow: hidden;
+            .cards-grid {
+                /* Grid responsivo sin necesidad de media queries complejas */
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             }
-
-            table { display: table; border-collapse: collapse; }
-            thead { display: table-header-group; background-color: #F8FAFC; }
-            tbody { display: table-row-group; }
-            tr { 
-                display: table-row; 
-                box-shadow: none; 
-                margin: 0; 
-                padding: 0; 
-                border-radius: 0;
-                border-bottom: 1px solid #E2E8F0;
+            .gift-card {
+                padding: 2rem;
             }
-            tr:last-child { border-bottom: none; }
-            th, td { display: table-cell; padding: 1.5rem 1rem; vertical-align: middle; }
-            th { text-transform: uppercase; font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; text-align: left; }
-            td::before { display: none; }
-            td.item-title { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -259,42 +382,45 @@
         <header class="header-section">
             <h1>👶 Lista de Deseos de Begoña</h1>
             
-            <div class="welcome-message">
-                <p>¡Gracias por acompañarnos en esta dulce espera! 💖 En la pestaña de <strong>Disponibles</strong> puedes ver algunas ideas de regalitos que nos harían mucha ilusión.</p>
-                <p>👗 <em>Un pequeño favor:</em> Si decides regalarnos ropita o pañales, te agradeceríamos muchísimo que sean para tallas de <strong>3 meses en adelante</strong> para que Begoña pueda aprovecharlos por más tiempo.</p>
-            </div>
-
-            <button class="btn-actualizar" onclick="cargarDatos()">🔄 Actualizar lista</button>
-            <div id="status" aria-live="polite">Listo.</div>
+            <details class="welcome-collapsible" id="mensaje-papas">
+                <summary>✨ Leer mensaje de los papás</summary>
+                <div class="welcome-content">
+                    <p>¡Mil gracias por acompañarnos y ser parte de esta dulce espera! 💖 Nos hace muchísima ilusión compartir esta alegría con ustedes.</p>
+                    <p>Hemos creado esta pequeña lista con sugerencias de regalitos que le vendrán súper bien a Begoña. Usando los <strong>botones de navegación de abajo</strong>, podrás ver tanto lo que sigue disponible como lo que ya nos han regalado.</p>
+                    <p>¡Cualquier detalle, grande o pequeño, nos llena de amor!</p>
+                    <p>Con mucho cariño,<br><strong>Los papás de la Bego, Cata y Pato ❤️</strong></p>
+                </div>
+            </details>
         </header>
 
-        <nav class="tabs" aria-label="Filtros de lista">
-            <button class="tab-btn active" id="btn-disponibles" onclick="cambiarPestana('disponibles')">
-                🎁 Disponibles para regalar
-            </button>
-            <button class="tab-btn" id="btn-comprometidos" onclick="cambiarPestana('comprometidos')">
-                ✅ Lo tenemos
-            </button>
-        </nav>
-
-        <section id="seccion-disponibles" class="tab-content active">
-            <div class="table-wrapper">
-                <table id="tablaDisponibles">
-                    <thead><tr id="headersDisponibles"></tr></thead>
-                    <tbody id="cuerpoDisponibles"></tbody>
-                </table>
-            </div>
+        <section id="seccion-disponibles" class="tab-content active" aria-labelledby="btn-disponibles">
+            <p class="tab-description">
+                En esta pestaña de <strong>"🎁 Disponibles"</strong> hay sugerencias de qué podrías regalarle a la Bego. Si decides regalarle ropa o pañales, agradeceríamos muchísimo que sean para tallas de <strong>3 meses en adelante</strong>, para así disfrutarlos por más tiempo.
+            </p>
+            <div id="gridDisponibles" class="cards-grid"></div>
         </section>
 
-        <section id="seccion-comprometidos" class="tab-content">
-            <div class="table-wrapper">
-                <table id="tablaComprometidos">
-                    <thead><tr id="headersComprometidos"></tr></thead>
-                    <tbody id="cuerpoComprometidos"></tbody>
-                </table>
-            </div>
+        <section id="seccion-comprometidos" class="tab-content" aria-labelledby="btn-comprometidos">
+             <p class="tab-description">
+                En esta pestaña de <strong>"✅ Ya lo tenemos"</strong>, verás lo que ya nos llegó o alguien ya se comprometió a regalarlo.
+             </p>
+             <div id="gridComprometidos" class="cards-grid"></div>
         </section>
     </main>
+
+    <nav class="floating-nav" aria-label="Navegación principal de regalos">
+        <button class="tab-btn active" id="btn-disponibles" onclick="cambiarPestana('disponibles')" aria-controls="seccion-disponibles">
+            🎁 Disponibles
+        </button>
+        <button class="tab-btn" id="btn-comprometidos" onclick="cambiarPestana('comprometidos')" aria-controls="seccion-comprometidos">
+            ✅ Ya lo tenemos
+        </button>
+        <button class="btn-refresh" onclick="cargarDatos()" aria-label="Actualizar lista de regalos" title="Actualizar lista">
+            🔄
+        </button>
+    </nav>
+
+    <div id="mensaje-estado" class="status-msg" role="status" aria-live="polite">✨ Lista actualizada.</div>
 
     <script>
         // --- CONFIGURACIÓN ---
@@ -302,22 +428,60 @@
         const COLUMNA_ESTADO = "Estado"; 
         // ---------------------
 
+        function mostrarMensaje(texto) {
+            const statusLabel = document.getElementById('mensaje-estado');
+            statusLabel.innerText = texto;
+            statusLabel.classList.add('show');
+            
+            setTimeout(() => {
+                statusLabel.classList.remove('show');
+            }, 3000);
+        }
+
         function cambiarPestana(pestana) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // 1. Ocultar el mensaje de los papás si está abierto
+            const mensajePapas = document.getElementById('mensaje-papas');
+            if (mensajePapas.hasAttribute('open')) {
+                mensajePapas.removeAttribute('open');
+            }
+
+            // Desmarcar botones y ocultar secciones
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
+            let seccionActiva;
+
+            // Mostrar la pestaña seleccionada
             if (pestana === 'disponibles') {
-                document.getElementById('btn-disponibles').classList.add('active');
-                document.getElementById('seccion-disponibles').classList.add('active');
+                const btn = document.getElementById('btn-disponibles');
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+                seccionActiva = document.getElementById('seccion-disponibles');
+                seccionActiva.classList.add('active');
             } else {
-                document.getElementById('btn-comprometidos').classList.add('active');
-                document.getElementById('seccion-comprometidos').classList.add('active');
+                const btn = document.getElementById('btn-comprometidos');
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+                seccionActiva = document.getElementById('seccion-comprometidos');
+                seccionActiva.classList.add('active');
             }
+            
+            // 2. Hacer scroll leve hacia el inicio del listado
+            // Usamos un ligero setTimeout para darle tiempo al navegador de renderizar el display: block
+            setTimeout(() => {
+                // Obtenemos la posición de la sección y le restamos 20px de margen superior
+                const yOffset = -20; 
+                const y = seccionActiva.getBoundingClientRect().top + window.scrollY + yOffset;
+                
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 50);
         }
 
         async function cargarDatos() {
-            const status = document.getElementById('status');
-            status.innerText = "⏳ Cargando los regalitos para Begoña...";
+            mostrarMensaje("⏳ Cargando regalitos...");
             
             try {
                 const response = await fetch(WEB_APP_URL);
@@ -336,89 +500,89 @@
                         return estado.includes("En camino") || estado.includes("comprometido") || estado.includes("Lo tenemos");
                     });
 
-                    dibujarTabla(disponibles, columnas, 'headersDisponibles', 'cuerpoDisponibles');
-                    dibujarTabla(comprometidos, columnas, 'headersComprometidos', 'cuerpoComprometidos');
+                    dibujarTarjetas(disponibles, columnas, 'gridDisponibles');
+                    dibujarTarjetas(comprometidos, columnas, 'gridComprometidos');
 
                     document.getElementById('btn-disponibles').innerText = `🎁 Disponibles (${disponibles.length})`;
-                    document.getElementById('btn-comprometidos').innerText = `✅ Lo tenemos (${comprometidos.length})`;
+                    document.getElementById('btn-comprometidos').innerText = `✅ Ya lo tenemos (${comprometidos.length})`;
 
-                    status.innerText = "✅ Lista actualizada correctamente.";
+                    mostrarMensaje("✨ Lista actualizada");
                 } else {
-                    status.innerText = "⚠️ Aún no hay datos en la hoja.";
+                    mostrarMensaje("⚠️ Aún no hay datos");
                 }
             } catch (error) {
                 console.error(error);
-                status.innerText = "❌ Hubo un error al conectar con la lista.";
+                mostrarMensaje("❌ Error de conexión");
             }
         }
 
-        function dibujarTabla(datosAgrupados, columnas, idHeaders, idCuerpo) {
-            const headersRow = document.getElementById(idHeaders);
-            const cuerpo = document.getElementById(idCuerpo);
-
-            headersRow.innerHTML = "";
-            cuerpo.innerHTML = "";
-
-            // Optimización: Uso de DocumentFragment para evitar repintados múltiples
-            const headersFragment = document.createDocumentFragment();
-            columnas.forEach(col => {
-                const th = document.createElement('th');
-                th.innerText = col;
-                headersFragment.appendChild(th);
-            });
-            headersRow.appendChild(headersFragment);
-
-            const cuerpoFragment = document.createDocumentFragment();
+        function dibujarTarjetas(datosAgrupados, columnas, idContenedor) {
+            const contenedor = document.getElementById(idContenedor);
+            contenedor.innerHTML = "";
 
             if(datosAgrupados.length === 0) {
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
-                td.colSpan = columnas.length;
-                td.innerHTML = "<strong>No hay regalitos en esta categoría por ahora.</strong>";
-                td.style.textAlign = "center";
-                td.style.padding = "3rem 1rem";
-                td.style.color = "var(--text-muted)";
-                tr.appendChild(td);
-                cuerpoFragment.appendChild(tr);
-            } else {
-                datosAgrupados.forEach(fila => {
-                    const tr = document.createElement('tr');
-                    
-                    columnas.forEach((col, index) => {
-                        const td = document.createElement('td');
-                        td.setAttribute('data-label', col);
-                        
-                        if (index === 1 || col.toLowerCase().includes('artículo') || col.toLowerCase().includes('regalo')) {
-                            td.classList.add('item-title');
-                        }
-
-                        const celdaInfo = fila[col];
-                        
-                        if(celdaInfo && celdaInfo.valor) {
-                            let textoValor = celdaInfo.valor.toString();
-
-                            if (textoValor.startsWith('http://') || textoValor.startsWith('https://')) {
-                                td.innerHTML = `<a href="${textoValor}" target="_blank" rel="noopener noreferrer" class="btn-link">Ver Producto</a>`;
-                            } 
-                            else if (col === COLUMNA_ESTADO) {
-                                let badgeClass = textoValor.includes('Disponible') ? 'badge-disponible' : 'badge-comprometido';
-                                td.innerHTML = `<span class="badge ${badgeClass}">${textoValor}</span>`;
-                            } 
-                            else {
-                                td.innerText = textoValor;
-                            }
-                        } else {
-                            td.innerText = "—";
-                        }
-                        
-                        tr.appendChild(td);
-                    });
-                    cuerpoFragment.appendChild(tr);
-                });
+                contenedor.innerHTML = "<div class='empty-msg'><strong>No hay regalitos en esta categoría por ahora.</strong></div>";
+                return;
             }
+
+            const colCategoria = columnas.find(c => c.toLowerCase().includes('categor')) || columnas[0];
+            const colTitulo = columnas.find(c => c.toLowerCase().includes('artículo') || c.toLowerCase().includes('regalo')) || columnas[1];
+
+            const fragment = document.createDocumentFragment();
+
+            datosAgrupados.forEach(fila => {
+                const card = document.createElement('article');
+                card.className = 'gift-card';
+
+                const valCategoria = (fila[colCategoria] && fila[colCategoria].valor) ? fila[colCategoria].valor : '';
+                const valTitulo = (fila[colTitulo] && fila[colTitulo].valor) ? fila[colTitulo].valor : 'Sin título';
+                const valEstado = (fila[COLUMNA_ESTADO] && fila[COLUMNA_ESTADO].valor) ? fila[COLUMNA_ESTADO].valor : '';
+
+                let valLink = "";
+                columnas.forEach(col => {
+                    const celda = fila[col];
+                    if(celda && celda.valor) {
+                        const texto = celda.valor.toString();
+                        if(texto.startsWith('http://') || texto.startsWith('https://')) {
+                            valLink = texto;
+                        }
+                    }
+                });
+
+                const categoryLabel = document.createElement('span');
+                categoryLabel.className = 'card-category';
+                categoryLabel.innerText = `🏷️ ${valCategoria}`;
+                card.appendChild(categoryLabel);
+
+                const title = document.createElement('h3');
+                title.className = 'item-title';
+                title.innerText = valTitulo;
+                card.appendChild(title);
+
+                const footer = document.createElement('footer');
+                footer.className = 'card-footer';
+                
+                const badge = document.createElement('span');
+                badge.className = valEstado.toLowerCase().includes('disponible') ? 'badge badge-disponible' : 'badge badge-comprometido';
+                badge.innerText = valEstado;
+                footer.appendChild(badge);
+
+                if (valLink) {
+                    const link = document.createElement('a');
+                    link.href = valLink;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.className = "btn-link";
+                    link.innerText = "🔗 Ver producto sugerido";
+                    link.setAttribute('aria-label', `Ver producto sugerido para ${valTitulo}`);
+                    footer.appendChild(link);
+                }
+
+                card.appendChild(footer);
+                fragment.appendChild(card);
+            });
             
-            // Inyectamos todo el HTML construido de una sola vez
-            cuerpo.appendChild(cuerpoFragment);
+            contenedor.appendChild(fragment);
         }
 
         window.onload = cargarDatos;
